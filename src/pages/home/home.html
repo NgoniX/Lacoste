@@ -1,18 +1,112 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Home</ion-title>
   </ion-navbar>
+
+   <ion-toolbar color="primary" no-border-top>
+    <ion-searchbar [(ngModel)]="queryText"
+                   (ionInput)="updateNews()"
+                   placeholder="Search for news">
+    </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content padding class="bgStyle">
+ 
+ <div class='csslider1 autoplay '>
+    <input name="cs_anchor1" id='cs_slide1_0' type="radio" class='cs_anchor slide' >
+    <input name="cs_anchor1" id='cs_slide1_1' type="radio" class='cs_anchor slide' >
+    <input name="cs_anchor1" id='cs_slide1_2' type="radio" class='cs_anchor slide' >
+    <input name="cs_anchor1" id='cs_play1' type="radio" class='cs_anchor' checked>
+    <input name="cs_anchor1" id='cs_pause1' type="radio" class='cs_anchor' >
+    <ul>
+      <div style="width: 100%; visibility: hidden; font-size: 0px; line-height: 0;">
+        <img src="https://gdb.voanews.com/900BE820-3935-4DF7-9B4F-077B9EAD29AE_cx0_cy2_cw0_w1080_h608.jpg" style="width: 100%;">
+      </div>
+      <li class='num0 img'>
+        <a href="" target=""><img src='https://www.capitalfm.co.ke/news/files/2017/11/c4db440796bd65d81dc8487e8807f5e79c7f83f1.jpg' alt='ED' title='ED' /> </a>
+      </li>
+      <li class='num1 img'>
+        <a href="" target=""><img src='https://gdb.voanews.com/900BE820-3935-4DF7-9B4F-077B9EAD29AE_cx0_cy2_cw0_w1080_h608.jpg' alt='Caps Utd' title='Caps Utd' /> </a>
+      </li>
+      <li class='num2 img'>
+        <a href="" target=""><img src='http://www.chronicle.co.zw/wp-content/uploads/2013/06/Morgan-Tsvangirai1.jpg' alt='Tsvangirai' title='Tsvangirai' /> </a>
+      </li>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+    </ul>
+    <div class='cs_description'>
+      <label class='num0'>
+        <span class="cs_title"><span class="cs_wrapper">Emmerson Mnangagwa sworn in as president</span></span>
+      </label>
+      <label class='num1'>
+        <span class="cs_title"><span class="cs_wrapper">Caps, Ajax meet over Zhuwawo deal</span></span>
+      </label>
+      <label class='num2'>
+        <span class="cs_title"><span class="cs_wrapper">Tsvangirai has done his part</span></span>
+      </label>
+    </div>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+    <div class='cs_arrowprev'>
+      <label class='num0' for='cs_slide1_0'></label>
+      <label class='num1' for='cs_slide1_1'></label>
+      <label class='num2' for='cs_slide1_2'></label>
+    </div>
+    <div class='cs_arrownext'>
+      <label class='num0' for='cs_slide1_0'></label>
+      <label class='num1' for='cs_slide1_1'></label>
+      <label class='num2' for='cs_slide1_2'></label>
+    </div>
+
+    <div class='cs_bullets'>
+      <label class='num0' for='cs_slide1_0'>
+        <span class='cs_point'></span>
+        <span class='cs_thumb'><img src='https://www.capitalfm.co.ke/news/files/2017/11/c4db440796bd65d81dc8487e8807f5e79c7f83f1.jpg' alt='ED' title='ED' /></span>
+      </label>
+      <label class='num1' for='cs_slide1_1'>
+        <span class='cs_point'></span>
+        <span class='cs_thumb'><img src='https://gdb.voanews.com/900BE820-3935-4DF7-9B4F-077B9EAD29AE_cx0_cy2_cw0_w1080_h608.jpg' alt='Caps Utd' title='Caps Utd' /></span>
+      </label>
+      <label class='num2' for='cs_slide1_2'>
+        <span class='cs_point'></span>
+        <span class='cs_thumb'><img src='http://www.chronicle.co.zw/wp-content/uploads/2013/06/Morgan-Tsvangirai1.jpg' alt='Tsvangirai' title='Tsvangirai' /></span>
+      </label>
+    </div>
+  </div>
+  <!-- End cssSlider.com -->
+
+  <ion-list> 
+
+     <ion-item-group *ngFor="let group of groups">
+
+      <ion-item-divider>
+        <ion-label>
+          {{group.category}}
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item-sliding *ngFor="let article of group.articles">
+
+        <button ion-item (click)="newsDetail(article)">
+          
+          <ion-thumbnail item-start>
+            <img class="news" src="{{ article.image }}">
+          </ion-thumbnail>
+
+          <h3><b>{{article.title}}</b></h3>
+          <p class="date_text">  {{article.date_added | amCalendar}} </p>
+          <button ion-button clear item-end><ion-icon name="arrow-dropright"></ion-icon></button>
+          
+  
+        </button>
+
+      </ion-item-sliding>
+
+
+    </ion-item-group>
+    
+  </ion-list>
+
 </ion-content>
