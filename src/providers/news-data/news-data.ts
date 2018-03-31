@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CacheService } from 'ionic-cache';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -8,28 +9,18 @@ import 'rxjs/add/observable/of';
 export class NewsDataProvider {
 
   data: any;
+  news: Observable<any>;
+  newsKey = 'news';
 
-  constructor(public http: HttpClient) {}
+  url: string = 'http://teamlacoste.com/api/news';
 
-  // getNews(){
-
-  // 	let apiURL = 'http://localhost/Lacoste/api/';
-
-  //   return new Promise(resolve => {
-  //   this.http.get(apiURL + 'news').subscribe(data => {
-  //     resolve(data);
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // });
-
-  // }
+  constructor(public http: HttpClient, private cache: CacheService) {}
 
 
   load(): any {
 
-   // get url of api for news
-   let url = 'http://teamlacoste.com/api/news';
+    // Specify custom TTL if you want
+   let ttl: number = 5;
 
   if (this.data) {
       // already loaded data
@@ -38,8 +29,12 @@ export class NewsDataProvider {
 
     else {
 
-     return this.http.get(url)
+      let delayType = 'all';
+
+     let req = this.http.get(this.url)
         .map(this.processData, this);
+
+     return this.cache.loadFromDelayedObservable(this.url, req, this.newsKey, ttl, delayType);
 
   }
 
@@ -47,13 +42,13 @@ export class NewsDataProvider {
 
   processData(data: any) {
     // just some good 'ol JS fun with objects and arrays
-    // build up the data by linking speakers to books
+    // build up the data by linking speakers to events
     this.data = data;
-    // loop through each day in the book
+    // loop through each day in the event
     this.data.news.forEach((article: any) => {
       // loop through each timeline group in the day
       article.groups.forEach((group: any) => {
-        // loop through each book in the timeline group
+        // loop through each event in the timeline group
         group.articles.forEach((cover: any) => {
         });
       });
@@ -62,11 +57,11 @@ export class NewsDataProvider {
     return this.data;
   }
 
-getArticles(articleIndex: number, queryText = '', segment = 'all') {
+getArticles(articleIndex: number, queryText = '') {
 
     return this.load().map((data: any) => {
       let article = data.news[articleIndex];
-      article.shownArticle = 0;
+      article.shownArticles = 0;
 
       queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
       let queryWords = queryText.split(' ').filter(w => !!w.trim().length);
@@ -74,14 +69,14 @@ getArticles(articleIndex: number, queryText = '', segment = 'all') {
       article.groups.forEach((group: any) => {
         group.hide = true;
 
-        group.articles.forEach((article: any) => {
+        group.articles.forEach((event: any) => {
           // check if this article should show or not
-          this.filterNews(article, queryWords, segment);
+          this.filterNews(event, queryWords);
 
-          if (!article.hide) {
+          if (!event.hide) {
             // if this article is not hidden then this group should show
             group.hide = false;
-            article.shownBooks++;
+            article.shownArticles++;
           }
         });
 
@@ -93,13 +88,13 @@ getArticles(articleIndex: number, queryText = '', segment = 'all') {
 
   }
 
-  filterNews(news: any, queryWords: string[], segment: string) {
+  filterNews(news_item: any, queryWords: string[]) {
 
     let matchesQueryText = false;
     if (queryWords.length) {
       // of any query word is in the news name than it passes the query test
       queryWords.forEach((queryWord: string) => {
-        if (news.title.toLowerCase().indexOf(queryWord) > -1) {
+        if (news_item.title.toLowerCase().indexOf(queryWord) > -1) {
           matchesQueryText = true;
         }
       });
@@ -107,6 +102,13 @@ getArticles(articleIndex: number, queryText = '', segment = 'all') {
       // if there are no query words then this news passes the query test
       matchesQueryText = true;
     }
+
+    let matchesSegment = false;
+      matchesSegment = true;
+    
+
+    // all tests must be true if it should not be hidden
+    news_item.hide = !(matchesQueryText && matchesSegment);
 
   }
 

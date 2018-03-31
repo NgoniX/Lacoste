@@ -77,9 +77,9 @@
   </div>
   <!-- End cssSlider.com -->
 
-  <ion-list> 
+  <ion-list [hidden]="shownArticles === 0"> 
 
-     <ion-item-group *ngFor="let group of groups">
+     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
 
       <ion-item-divider>
         <ion-label>

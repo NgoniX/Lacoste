@@ -5,11 +5,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content parallax-header>
+<ion-content>
 
-  <div class="header-image"></div>
-
-    <div class="main-content"></div>
+  <ion-card text-center class="hide-card">
+     <img src="assets/imgs/logo.jpg" class="custom-avatar"/>
+  </ion-card>
 
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
@@ -17,7 +17,7 @@
         {{p.title}}
       </button>
     </ion-list>
-  </ion-content>
+</ion-content>
 
 </ion-menu>
 

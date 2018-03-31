@@ -33,7 +33,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.backgroundColorByHexString("#228B22");
+      this.statusBar.backgroundColorByHexString("#cf0906");
       this.splashScreen.hide();
 
       var notificationOpenedCallback = function(jsonData:any) {

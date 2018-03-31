@@ -16,16 +16,21 @@
 // automatically applied to the <body> element in the app.
 
 .bgStyle{
-	background-color: #ccc;
+	background-color: #eee;
 }
 
 .ios, .md{
 
-    .header-image{
-      background-image: url('../assets/imgs/croc.jpg');
-      height: 100px;
-      background-size: cover;
-      background-position: center center;
+    .hide-card {
+      -webkit-box-shadow: none!important;
+    }
+
+    .custom-avatar {
+      height: 30%;
+      border: 1px solid #fff;
+      display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
     }
     
   }

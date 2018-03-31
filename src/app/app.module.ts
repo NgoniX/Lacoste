@@ -21,6 +21,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { AdMobFree } from '@ionic-native/admob-free';
 import { Badge } from '@ionic-native/badge';
 import { Network } from '@ionic-native/network';
+ 
+import { CacheModule } from 'ionic-cache';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { Network } from '@ionic-native/network';
     HttpClientModule,
     BrowserModule,
     MomentModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CacheModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

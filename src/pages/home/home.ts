@@ -51,7 +51,7 @@ export class HomePage {
     });
     loader.present();
 
-    this.newsData.getArticles(this.articleIndex, this.queryText, this.segment)
+    this.newsData.getArticles(this.articleIndex, this.queryText)
     .subscribe((data:any) => {
         loader.dismiss();
         this.groups = data.groups;
